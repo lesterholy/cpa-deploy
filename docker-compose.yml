@@ -1,0 +1,23 @@
+services:
+  cli-proxy-api:
+    image: eceasy/cli-proxy-api:$VERSION
+    container_name: cli-proxy-api
+    restart: unless-stopped
+    environment:
+      - TZ=$TZ
+      - MANAGEMENT_PASSWORD=$MANAGEMENT_PASSWORD # WebUI 管理密码
+      - MANAGEMENT_STATIC_PATH=$MANAGEMENT_STATIC_PATH
+      - PGSTORE_LOCAL_PATH=$PGSTORE_LOCAL_PATH
+      - PGSTORE_DSN=$PGSTORE_DSN
+      - PRIVATE_HOST=$PRIVATE_HOST
+    ports:
+      - "127.0.0.1:8317:8317"
+      - $PRIVATE_HOST:8317:8317
+    volumes:
+      - ./data:/tmp
+    networks:
+      - dokploy-network
+
+networks:
+  dokploy-network:
+    driver: bridge
